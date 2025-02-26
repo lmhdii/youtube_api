@@ -6,9 +6,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DemoApp(),
-    );
+    return MaterialApp(home: DemoApp());
   }
 }
 
@@ -18,7 +16,7 @@ class DemoApp extends StatefulWidget {
 }
 
 class _DemoAppState extends State<DemoApp> {
-  static String _key = "YOUR_API_KEY";
+  static String _key = "AIzaSyDfWC5neX2oIZHhHDUv8UmAjLH0Ocu4fxE";
 
   final _youtube = YoutubeApi(_key);
   List<ApiResult> _result = [];
@@ -34,25 +32,20 @@ class _DemoAppState extends State<DemoApp> {
     );
     _result = await _youtube.search(
       query,
-      options: SearchOptions(
-        type: [ResultType.channel],
-      ),
+      options: SearchOptions(type: [ResultType.channel]),
     );
     _result = (await _youtube.nextPage()) ?? [];
-    _result = await _youtube.searchVideosById([
-      "4AoFA19gbLo"
-    ], parts: {
-      VideoPart.snippet,
-      VideoPart.contentDetails,
-    });
-    _result = await _youtube
-        .searchPlaylistsById(["PLjxrf2q8roU0WrDTm4tUB430Mja7dQEVP"]);
-    _result = await _youtube.searchChannelsById([
-      "UCwXdFgeE9KYzlDdR7TG9cMw"
-    ], parts: {
-      ChannelPart.snippet,
-      ChannelPart.brandingSettings,
-    });
+    _result = await _youtube.searchVideosById(
+      ["4AoFA19gbLo"],
+      parts: {VideoPart.snippet, VideoPart.contentDetails},
+    );
+    _result = await _youtube.searchPlaylistsById([
+      "PLjxrf2q8roU0WrDTm4tUB430Mja7dQEVP",
+    ]);
+    _result = await _youtube.searchChannelsById(
+      ["UCwXdFgeE9KYzlDdR7TG9cMw"],
+      parts: {ChannelPart.snippet, ChannelPart.brandingSettings},
+    );
     setState(() {});
   }
 
@@ -67,12 +60,8 @@ class _DemoAppState extends State<DemoApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[100],
-      appBar: AppBar(
-        title: Text('Youtube API'),
-      ),
-      body: ListView(
-        children: _result.map<Widget>(listItem).toList(),
-      ),
+      appBar: AppBar(title: Text('Youtube API')),
+      body: ListView(children: _result.map<Widget>(listItem).toList()),
     );
   }
 
@@ -89,7 +78,9 @@ class _DemoAppState extends State<DemoApp> {
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Image.network(
-                    obj.snippet!.thumbnails![ThumbnailResolution.default_]
+                    obj
+                            .snippet!
+                            .thumbnails![ThumbnailResolution.default_]
                             ?.url ??
                         '',
                     width: 120.0,
@@ -100,19 +91,16 @@ class _DemoAppState extends State<DemoApp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    obj.url,
-                    softWrap: true,
-                  ),
+                  Text(obj.url, softWrap: true),
                   if (obj is YoutubeVideo)
                     ..._buildVideoElements(obj)
                   else if (obj is YoutubeChannel)
                     ..._buildChannelElements(obj)
                   else if (obj is YoutubePlaylist)
-                    ..._buildPlaylistElements(obj)
+                    ..._buildPlaylistElements(obj),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -120,74 +108,64 @@ class _DemoAppState extends State<DemoApp> {
   }
 
   List<Widget> _buildVideoElements(YoutubeVideo obj) => [
-        if (obj.snippet != null) ...[
-          Text(
-            obj.snippet!.title ?? '',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 3.0),
-            child: Text(
-              obj.snippet!.channelTitle ?? '',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text("publishedAt: ${obj.snippet!.publishedAt}"),
-          Text("tags: ${obj.snippet!.tags?.take(3).join(", ")}"),
-          Text("category: ${obj.snippet!.category?.name}"),
-        ],
-        if (obj.contentDetails != null) ...[
-          Text("duration: ${obj.contentDetails?.duration}"),
-        ],
-      ];
+    if (obj.snippet != null) ...[
+      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3.0),
+        child: Text(
+          obj.snippet!.channelTitle ?? '',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Text("publishedAt: ${obj.snippet!.publishedAt}"),
+      Text("tags: ${obj.snippet!.tags?.take(3).join(", ")}"),
+      Text("category: ${obj.snippet!.category?.name}"),
+    ],
+    if (obj.contentDetails != null) ...[
+      Text("duration: ${obj.contentDetails?.duration}"),
+    ],
+  ];
 
   List<Widget> _buildChannelElements(YoutubeChannel obj) => [
-        if (obj.snippet != null) ...[
-          Text(
-            obj.snippet!.title ?? '',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 3.0),
-            child: Text(
-              obj.snippet!.customUrl ?? '',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text("publishedAt: ${obj.snippet!.publishedAt}"),
-          Text("description: ${obj.snippet!.description}"),
-        ],
-        if (obj.brandingSettings != null) ...[
-          Text(
-            obj.brandingSettings!.country ?? '',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 3.0),
-            child: Text(
-              obj.brandingSettings!.keywords.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text("moderateComments: ${obj.brandingSettings!.moderateComments}"),
-          Text(
-              "unsubscribedTrailer: ${obj.brandingSettings!.unsubscribedTrailer}"),
-        ],
-      ];
+    if (obj.snippet != null) ...[
+      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3.0),
+        child: Text(
+          obj.snippet!.customUrl ?? '',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Text("publishedAt: ${obj.snippet!.publishedAt}"),
+      Text("description: ${obj.snippet!.description}"),
+    ],
+    if (obj.brandingSettings != null) ...[
+      Text(
+        obj.brandingSettings!.country ?? '',
+        style: TextStyle(fontSize: 18.0),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3.0),
+        child: Text(
+          obj.brandingSettings!.keywords.toString(),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Text("moderateComments: ${obj.brandingSettings!.moderateComments}"),
+      Text("unsubscribedTrailer: ${obj.brandingSettings!.unsubscribedTrailer}"),
+    ],
+  ];
   List<Widget> _buildPlaylistElements(YoutubePlaylist obj) => [
-        if (obj.snippet != null) ...[
-          Text(
-            obj.snippet!.title ?? '',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 3.0),
-            child: Text(
-              obj.snippet!.channelTitle ?? '',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Text("publishedAt: ${obj.snippet!.publishedAt}"),
-        ],
-      ];
+    if (obj.snippet != null) ...[
+      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 3.0),
+        child: Text(
+          obj.snippet!.channelTitle ?? '',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Text("publishedAt: ${obj.snippet!.publishedAt}"),
+    ],
+  ];
 }
