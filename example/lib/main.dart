@@ -78,9 +78,7 @@ class _DemoAppState extends State<DemoApp> {
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Image.network(
-                    obj
-                            .snippet!
-                            .thumbnails![ThumbnailResolution.default_]
+                    obj.snippet!.thumbnails![ThumbnailResolution.default_]
                             ?.url ??
                         '',
                     width: 120.0,
@@ -108,64 +106,65 @@ class _DemoAppState extends State<DemoApp> {
   }
 
   List<Widget> _buildVideoElements(YoutubeVideo obj) => [
-    if (obj.snippet != null) ...[
-      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 3.0),
-        child: Text(
-          obj.snippet!.channelTitle ?? '',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Text("publishedAt: ${obj.snippet!.publishedAt}"),
-      Text("tags: ${obj.snippet!.tags?.take(3).join(", ")}"),
-      Text("category: ${obj.snippet!.category?.name}"),
-    ],
-    if (obj.contentDetails != null) ...[
-      Text("duration: ${obj.contentDetails?.duration}"),
-    ],
-  ];
+        if (obj.snippet != null) ...[
+          Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            child: Text(
+              obj.snippet!.channelTitle ?? '',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text("publishedAt: ${obj.snippet!.publishedAt}"),
+          Text("tags: ${obj.snippet!.tags?.take(3).join(", ")}"),
+          Text("category: ${obj.snippet!.category?.name}"),
+        ],
+        if (obj.contentDetails != null) ...[
+          Text("duration: ${obj.contentDetails?.duration}"),
+        ],
+      ];
 
   List<Widget> _buildChannelElements(YoutubeChannel obj) => [
-    if (obj.snippet != null) ...[
-      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 3.0),
-        child: Text(
-          obj.snippet!.customUrl ?? '',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Text("publishedAt: ${obj.snippet!.publishedAt}"),
-      Text("description: ${obj.snippet!.description}"),
-    ],
-    if (obj.brandingSettings != null) ...[
-      Text(
-        obj.brandingSettings!.country ?? '',
-        style: TextStyle(fontSize: 18.0),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 3.0),
-        child: Text(
-          obj.brandingSettings!.keywords.toString(),
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Text("moderateComments: ${obj.brandingSettings!.moderateComments}"),
-      Text("unsubscribedTrailer: ${obj.brandingSettings!.unsubscribedTrailer}"),
-    ],
-  ];
+        if (obj.snippet != null) ...[
+          Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            child: Text(
+              obj.snippet!.customUrl ?? '',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text("publishedAt: ${obj.snippet!.publishedAt}"),
+          Text("description: ${obj.snippet!.description}"),
+        ],
+        if (obj.brandingSettings != null) ...[
+          Text(
+            obj.brandingSettings!.country ?? '',
+            style: TextStyle(fontSize: 18.0),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            child: Text(
+              obj.brandingSettings!.keywords.toString(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text("moderateComments: ${obj.brandingSettings!.moderateComments}"),
+          Text(
+              "unsubscribedTrailer: ${obj.brandingSettings!.unsubscribedTrailer}"),
+        ],
+      ];
   List<Widget> _buildPlaylistElements(YoutubePlaylist obj) => [
-    if (obj.snippet != null) ...[
-      Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 3.0),
-        child: Text(
-          obj.snippet!.channelTitle ?? '',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Text("publishedAt: ${obj.snippet!.publishedAt}"),
-    ],
-  ];
+        if (obj.snippet != null) ...[
+          Text(obj.snippet!.title ?? '', style: TextStyle(fontSize: 18.0)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            child: Text(
+              obj.snippet!.channelTitle ?? '',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text("publishedAt: ${obj.snippet!.publishedAt}"),
+        ],
+      ];
 }
